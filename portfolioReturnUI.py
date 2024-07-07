@@ -18,6 +18,15 @@ function refresh() {
 
 locale.setlocale(locale.LC_MONETARY, 'en_IN')
 
+# def create_pie_chart(schemes):
+#     labels = list(schemes.keys())
+#     values = list(schemes.values())
+    
+#     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+#     fig.update_layout(title_text="Scheme Weightages")
+#     return fig
+
+
 def get_nav_data(scheme_code):
     url = f"https://api.mfapi.in/mf/{scheme_code}"
     response = requests.get(url)
@@ -29,7 +38,7 @@ def get_nav_data(scheme_code):
     inception_date = df['date'].min()
     return df, inception_date
 
-def calculate_sip_returns(nav_data, sip_amount, upfront_amount, start_date, end_date, SIP_Date):
+def calculate_sip_returns(nav_data, sip_amount, upfront_amount, stepup, start_date, end_date, SIP_Date):
     start_date = pd.Timestamp(start_date)
     end_date = pd.Timestamp(end_date)
 
@@ -43,30 +52,30 @@ def calculate_sip_returns(nav_data, sip_amount, upfront_amount, start_date, end_
         last_dates = nav_data_filtered.groupby([nav_data_filtered['date'].dt.year, nav_data_filtered['date'].dt.month]).apply(lambda x: x.iloc[len(x)//2])
 
     total_investment = upfront_amount
+    current_sip_amount = sip_amount
 
     # do calculation for upfront investment
     units_bought = upfront_amount / nav_data_filtered.iloc[0]['nav']
     units_accumulated = units_bought
-    
+    previous_year = start_date.year
+
     for _, row in last_dates.iloc[:-1].iterrows():
-        units_bought = sip_amount / row['nav']
+        # Check if a year has passed and increase SIP amount accordingly
+        if row['date'].year > previous_year:
+            current_sip_amount += current_sip_amount * (stepup / 100)
+            previous_year = row['date'].year
+
+        units_bought = current_sip_amount / row['nav']
         units_accumulated += units_bought
-        total_investment += sip_amount
-    
+        total_investment += current_sip_amount
+
     final_value = units_accumulated * last_dates.iloc[-1]['nav']
     total_return = (final_value - total_investment) / total_investment * 100
-    
+
     return total_return, final_value, total_investment
 
-# def create_pie_chart(schemes):
-#     labels = list(schemes.keys())
-#     values = list(schemes.values())
-    
-#     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-#     fig.update_layout(title_text="Scheme Weightages")
-#     return fig
 
-def calculate_portfolio_returns(schemes, sip_amount, upfront_amount, start_date, end_date, SIP_date, schemes_df):
+def calculate_portfolio_returns(schemes, sip_amount, upfront_amount, stepup, start_date, end_date, SIP_date, schemes_df):
     scheme_returns = []
     total_investment = 0
     final_value = 0
@@ -76,7 +85,7 @@ def calculate_portfolio_returns(schemes, sip_amount, upfront_amount, start_date,
         scheme_code = schemes_df[schemes_df['schemeName'] == scheme_name]['schemeCode'].values[0]
         nav_data, inception_date = get_nav_data(scheme_code)
         inception_dates.append((scheme_name, inception_date))
-        scheme_return, scheme_final_value, scheme_total_investment = calculate_sip_returns(nav_data, sip_amount * scheme_weight / 100, upfront_amount * scheme_weight / 100, start_date, end_date, SIP_date)
+        scheme_return, scheme_final_value, scheme_total_investment = calculate_sip_returns(nav_data, sip_amount * scheme_weight / 100, upfront_amount * scheme_weight / 100, stepup, start_date, end_date, SIP_date)
         scheme_returns.append((scheme_name, scheme_return,scheme_final_value,scheme_total_investment))
         final_value += scheme_final_value
         total_investment += scheme_total_investment
@@ -91,10 +100,11 @@ def update_sip_calculator(*args):
     SIP_Date = args[3]
     sip_amount = args[4]
     upfront_amount = args[5]
-    schemes_df = args[6]
+    stepup = args[6]
+    schemes_df = args[7]
     schemes = {}
     
-    for i in range(7, len(args) - 1, 2):  # Adjust range to account for use_inception_date
+    for i in range(8, len(args) - 1, 2):  # Adjust range to account for use_inception_date
         if args[i] and args[i+1]:
             schemes[args[i]] = float(args[i+1])
 
@@ -131,7 +141,7 @@ def update_sip_calculator(*args):
             start_date = end_date - timedelta(days=months*30)
 
     try:
-        portfolio_return, final_value, total_investment, scheme_returns, inception_dates = calculate_portfolio_returns(schemes, sip_amount, upfront_amount, start_date, end_date, SIP_Date, schemes_df)
+        portfolio_return, final_value, total_investment, scheme_returns, inception_dates = calculate_portfolio_returns(schemes, sip_amount, upfront_amount,stepup, start_date, end_date, SIP_Date, schemes_df)
     except Exception as e:
         return f"Error: {str(e)}", None, None, None
 
@@ -278,6 +288,7 @@ def create_ui():
         with gr.Row():
             sip_amount = gr.Number(label="SIP Amount (₹)")
             upfront_amount = gr.Number(label="Upfront Investment (₹)",value=0)
+            stepup = gr.Number(label="Stepup %",value=0)
 
         schemes_list = gr.State([])
         
@@ -364,8 +375,8 @@ def create_ui():
             outputs=inception_date_display
         )
 
-        def prepare_inputs_with_inception(period, custom_start, custom_end, SIP_Date, sip_amount, upfront_amount,schemes_list, schemes_df, use_inception_date, inception_date_display):
-            inputs = [period, custom_start, custom_end, SIP_Date, sip_amount, upfront_amount,schemes_df]
+        def prepare_inputs_with_inception(period, custom_start, custom_end, SIP_Date, sip_amount, upfront_amount,stepup, schemes_list, schemes_df, use_inception_date, inception_date_display):
+            inputs = [period, custom_start, custom_end, SIP_Date, sip_amount, upfront_amount, stepup, schemes_df]
             for name, weight in schemes_list:
                 inputs.extend([name, weight])
             
@@ -377,7 +388,7 @@ def create_ui():
 
         calculate_button.click(
             lambda *args: update_sip_calculator(*prepare_inputs_with_inception(*args)),
-            inputs=[period, custom_start_date, custom_end_date, SIP_Date, sip_amount,upfront_amount,schemes_list, gr.State(schemes_df), use_inception_date, inception_date_display],
+            inputs=[period, custom_start_date, custom_end_date, SIP_Date, sip_amount,upfront_amount,stepup,schemes_list, gr.State(schemes_df), use_inception_date, inception_date_display],
             outputs=[result]
             # outputs=[result, final_value, total_investment]
             # outputs=[result, pie_chart, final_value, total_investment]
