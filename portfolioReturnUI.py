@@ -130,7 +130,7 @@ def update_sip_calculator(*args):
 
     # Check if start_date is before any scheme's inception date
     inception_warnings = []
-    earliest_inception_date = min(inception_date for _, inception_date in inception_dates)
+    earliest_inception_date = max(inception_date for _, inception_date in inception_dates)
     for scheme_name, inception_date in inception_dates:
         if start_date < inception_date.date():
             inception_warnings.append(f"Warning: {scheme_name} inception date ({inception_date.date()}) is after the chosen start date ({start_date}).")
@@ -139,7 +139,7 @@ def update_sip_calculator(*args):
     if inception_warnings:
         result += "The following warnings were found:\n"
         result += "\n".join(inception_warnings) + "\n\n"
-        result += f"The earliest possible start date for all chosen schemes is: {earliest_inception_date.date()}\n\n"
+        result += f"Possible start date for all chosen schemes is: {earliest_inception_date.date()}\n\n"
 
     result += f"Total portfolio SIP return: {portfolio_return:.2f}%\n"
     result += f"Total investment: ₹{total_investment:.2f}\n"
@@ -185,7 +185,25 @@ def update_schemes_list(schemes_list, updated_data):
 
 def update_schemes_table(schemes_list):
     df = pd.DataFrame(schemes_list, columns=["Scheme Name", "Weight (%)"])
-    df["Actions"] = "❌"  # Use a different emoji to avoid confusion with the deletion mark
+    df["Actions"] = "❌"
+    
+    # Calculate the sum of weights
+    total_weight = df["Weight (%)"].sum()
+    
+    # Add a row for the total
+    total_row = pd.DataFrame({
+        "Scheme Name": ["Total"],
+        "Weight (%)": [total_weight],
+        "Actions": [""]
+    })
+    
+    # Concatenate the original dataframe with the total row
+    df = pd.concat([df, total_row], ignore_index=True)
+    
+    # Add a warning if total weight exceeds 100%
+    if total_weight > 100:
+        df.loc[df.index[-1], "Actions"] = "⚠️ Exceeds 100%"
+    
     return df
 
 def add_scheme_to_list(schemes_list, scheme_name, weight):
@@ -196,7 +214,16 @@ def add_scheme_to_list(schemes_list, scheme_name, weight):
 
 def update_schemes(schemes_list, updated_data):
     try:
-        new_schemes_list = update_schemes_list(schemes_list, updated_data)
+        new_schemes_list = []
+        for _, row in updated_data.iterrows():
+            scheme_name = row.get('Scheme Name')
+            weight = row.get('Weight (%)')
+            if scheme_name != 'Total' and weight is not None:
+                try:
+                    weight_float = float(weight)
+                    new_schemes_list.append((scheme_name, weight_float))
+                except ValueError:
+                    continue
         if not new_schemes_list:
             return schemes_list, update_schemes_table(schemes_list), "No valid schemes found in the table."
         return new_schemes_list, update_schemes_table(new_schemes_list), None
@@ -215,11 +242,13 @@ def handle_row_selection(schemes_list, evt: gr.SelectData, table_data):
         column_index = evt.index[1]
         if column_index == 2:  # "Actions" column
             row_index = evt.index[0]
-            # Remove the row instead of marking it
-            table_data = table_data.drop(row_index).reset_index(drop=True)
-            # Update the schemes_list
-            updated_schemes_list = [(row['Scheme Name'], row['Weight (%)']) for _, row in table_data.iterrows()]
-            return table_data, updated_schemes_list
+            if row_index < len(table_data) - 1:  # Ensure we're not trying to delete the total row
+                # Remove the row
+                table_data = table_data.drop(row_index).reset_index(drop=True)
+                # Update the schemes_list
+                updated_schemes_list = [(row['Scheme Name'], row['Weight (%)']) for _, row in table_data.iterrows() if row['Scheme Name'] != 'Total']
+                # Recalculate the total
+                return update_schemes_table(updated_schemes_list), updated_schemes_list
     return table_data, schemes_list
 
 def create_ui():
@@ -229,10 +258,10 @@ def create_ui():
         gr.Markdown("# Mutual Fund SIP Returns Calculator")
 
         with gr.Row():
-            period = gr.Dropdown(choices=["YTD", "1 month","3 months","6 months","1 year", "3 years", "5 years", "7 years", "10 years","15 years","20 years", "Custom"], label="Select Period")
+            period = gr.Dropdown(choices=["YTD", "1 month","3 months","6 months","1 year", "3 years", "5 years", "7 years", "10 years","15 years","20 years", "Custom"], label="Select Period",value="YTD")
             custom_start_date = gr.Textbox(label="Custom Start Date (YYYY-MM-DD)", visible=False)
             custom_end_date = gr.Textbox(label="Custom End Date (YYYY-MM-DD)", visible=False)
-            SIP_Date = gr.Dropdown(label="Monthly SIP Date", choices=["start","middle","end"])
+            SIP_Date = gr.Dropdown(label="Monthly SIP Date", choices=["start","middle","end"],value="end")
             with gr.Column():
                 use_inception_date = gr.Checkbox(label="Use Earliest Inception Date", value=False)
                 inception_date_display = gr.Textbox(label="Earliest Inception Date", interactive=False)
