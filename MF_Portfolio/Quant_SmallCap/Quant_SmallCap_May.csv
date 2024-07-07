@@ -1,0 +1,91 @@
+SR,ISIN,NAME,INDUSTRY,QUANTITY,MARKET_VALUE,%_NAV
+1,INE002A01018,Reliance Industries Limited,Petroleum Products,7031950,201170.03,9.47
+2,INE758E01017,Jio Financial Services Limited,Finance,36441660,125486.86,5.91
+3,INE821I01022,IRB Infrastructure Developers Limited,Construction,121303074,80181.33,3.77
+4,INE00E101023,Bikaji Foods International Limited,Food Products,11253822,66830.82,3.15
+5,INE208C01025,Aegis Logistics Limited,Gas,9384254,66332.6,3.12
+6,INE031A01017,Housing & Urban Devlopment Company Ltd,Finance,22407101,61350.64,2.89
+7,INE976G01028,RBL Bank Limited,Banks,24278477,59652.22,2.81
+8,INE139A01034,National Aluminium Company Limited,Non - Ferrous Metals,30260000,57993.29,2.73
+9,INE034A01011,Arvind Limited,Textiles & Apparels,14133985,53334.59,2.51
+10,INE814H01011,Adani Power Limited,Power,6483192,48999.97,2.31
+11,INE040A01034,HDFC Bank Limited,Banks,3136000,48029.41,2.26
+12,INE463V01026,Anand Rathi Wealth Limited,Capital Markets,1129197,47374.33,2.23
+13,INE548A01028,HFCL Limited,Telecom - Services,42844580,44451.25,2.09
+14,INE545A01016,HEG Limited,Industrial Products,1862211,42787.09,2.01
+15,INE263M01029,KEYSTONE REALTORS LIMITED,Realty,6150431,42683.99,2.01
+16,INE109A01011,Shipping Corporation Of India Limited,Transport Services,16826359,41342.36,1.95
+17,INE0J1Y01017,Life Insurance Corporation Of India,Insurance,3543682,35886.87,1.69
+18,INE191A01027,Orchid Pharma Limited,Pharmaceuticals & Biotechnology,3465947,34753.05,1.64
+19,INE0DD101019,Railtel Corporation Of India Limited,Telecom - Services,7960000,32950.42,1.55
+20,INE205C01021,Poly Medicure Limited,Healthcare Equipment & Supplies,1759115,31703.65,1.49
+21,INE614B01018,Karnataka Bank Ltd,Banks,14754512,31618.92,1.49
+22,INE228A01035,Usha Martin Limited,Industrial Products,8372871,30531.67,1.44
+23,INE599M01018,Just Dial Limited,Retailing,3170677,29560.22,1.39
+24,INE842C01021,Minda Corporation Ltd,Auto Components,6688077,28447.74,1.34
+25,INE467B01029,Tata Consultancy Services Limited,IT - Software,760000,27899.22,1.31
+26,INE510A01028,Engineers India Limited,Construction,10742017,26677.8,1.26
+27,INE371A01025,Graphite India Limited,Industrial Products,4636100,26212.51,1.23
+28,INE647O01011,Aditya Birla Fashion And Retail Ltd,Retailing,8675245,24954.34,1.17
+29,INE939A01011,Strides Pharma Science Ltd,Pharmaceuticals & Biotechnology,2840936,24454.78,1.15
+30,INE589A01014,NLC India Limited,Power,10238186,24213.31,1.14
+31,INE142Q01026,Sula Vineyards Limited,Beverages,4193748,21895.56,1.03
+32,INE700A01033,Jubilant Pharmova Limited,Pharmaceuticals & Biotechnology,3059145,21048.45,0.99
+33,INE126A01031,EID Parry (India) Ltd,Fertilizers & Agrochemicals,2662402,17786.18,0.84
+34,INE930P01018,Anupam Rasayan India Limited,Chemicals & Petrochemicals,2086516,15912.81,0.75
+35,INE119A01028,Balrampur Chini Mills Limited,Agricultural Food & other Products,4189000,15844.89,0.75
+36,INE749A01030,Jindal Steel & Power Ltd,Ferrous Metals,1535000,15782.1,0.74
+37,INE922K01024,INDIA SHELTER FIN CORP LTD,Finance,2577693,15107.86,0.71
+38,INE886H01027,TV18 Broadcast Ltd,Entertainment,35760025,15037.09,0.71
+39,INE07T201019,Restaurant Brands Asia Limited,Leisure Services,14000400,14308.41,0.67
+40,INE696F01016,Juniper Hotels Limited,Leisure Services,3257731,14105.98,0.66
+41,INE053F01010,Indian Railway Finance Corp Ltd,Finance,7500000,13335,0.63
+42,INE780C01023,JM FINANCIAL LIMITED,Finance,16714161,13137.33,0.62
+43,INE873D01024,INDOCO REMEDIES LIMITED,Pharmaceuticals & Biotechnology,4199230,12616.59,0.59
+44,INE807F01027,Sequent Scientific Limited,Pharmaceuticals & Biotechnology,11159398,11544.4,0.54
+45,INE949H01023,Man Infraconstruction Limited,Construction,6030000,11333.39,0.53
+46,INE153T01027,BLS International Services Limited,Leisure Services,3150000,9805.95,0.46
+47,INE291A01017,Garware Hi-Tech Films Ltd,Industrial Products,537855,9703.44,0.46
+48,INE421C01016,TVS Srichakra Limited,Auto Components,237471,9590.5,0.45
+49,INE019C01026,Himadri Speciality Chemical Limited,Chemicals & Petrochemicals,2834000,9434.39,0.44
+50,INE039O01011,Jash Engineering Limited,Industrial Manufacturing,412817,9043.38,0.43
+51,INE0AE001013,Vishnu Prakash R Punglia Limited,Construction,5087689,9000.12,0.42
+52,INE229H01012,Nitin Spinners Limited,Textiles & Apparels,2730499,8592.88,0.40
+53,INE271B01025,Maharashtra Seamless Ltd,Industrial Products,1300497,8520.86,0.40
+54,INE953L01027,Jana Small Finance Bank Ltd,Banks,1419222,8262.71,0.39
+55,INE634I01029,KNR Constructions Ltd,Construction,2579320,8199.66,0.39
+56,INE0N2P01017,RISHABH INSTRUMENTS LIMITED,Electrical Equipment,1897034,8021.61,0.38
+57,INE026A01025,Gujarat State Fert & Chemicals Ltd,Fertilizers & Agrochemicals,3700000,7790.35,0.37
+58,INE777F01014,Exicom Tele-Systems Limited,Electrical Equipment,2176283,6818.29,0.32
+59,INE0I7C01011,Latent View Analytics Limited,IT - Software,1370000,6525.31,0.31
+60,INE868B01028,NCC Ltd,Construction,2254278,6468.65,0.30
+61,INE149K01016,Sandur Manganese & Iron Ores Ltd,Consumable Fuels,1223220,6454.32,0.30
+62,INE988S01028,Apeejay Surrendra Park Hotels Limited,Leisure Services,3831328,6428.97,0.30
+63,INE136S01016,Neogen Chemicals Limited,Chemicals & Petrochemicals,427577,6336.48,0.30
+64,INE101D01020,Granules India Limited,Pharmaceuticals & Biotechnology,1507894,6310.54,0.30
+65,INE725E01024,The Orissa Minerals Development Co Ltd,Minerals & Mining,107059,6039.31,0.28
+66,INE0LRU01027,Aarti Pharmalabs Limited,Pharmaceuticals & Biotechnology,1051000,5906.62,0.28
+67,INE0L9R01028,Gopal Snacks Limited,Food Products,1791672,5670.64,0.27
+68,INE364U01010,Adani Green Energy Limited,Power,265000,5057.13,0.24
+69,INE594H01019,Thyrocare Technologies Limited,Healthcare Services,737372,4514.19,0.21
+70,INE769A01020,Aarti Industries Ltd,Chemicals & Petrochemicals,731373,4473.44,0.21
+71,INE681B01017,Indraprastha Medical Corporation Limited,Healthcare Services,1726081,4253.06,0.20
+72,INE825A01020,Vardhman Textiles Limited,Textiles & Apparels,835000,3774.62,0.18
+73,INE438K01021,Sai Silks (Kalamandir) Limited,Retailing,2095455,3652.38,0.17
+74,INE264T01014,Capacite Infraprojects Limited,Construction,1126624,3474.51,0.16
+75,INE00WC01027,Affle (India) Limited,IT - Services,295651,3362.29,0.16
+76,INE0GSL01024,HP Adhesives Limited,Chemicals & Petrochemicals,3415685,3343.96,0.16
+77,INE032B01021,Prime Securities Limited,Finance,1611960,3244.88,0.15
+78,INE112L01020,Metropolis Healthcare Ltd,Healthcare Services,154363,2943.16,0.14
+79,INE340A01012,Birla Corporation Ltd,Cement & Cement Products,198186,2795.12,0.13
+80,INE751B01018,PIX Transmission Limited,Industrial Products,212581,2790.13,0.13
+81,INE052T01013,Best Agrolife Limited,Fertilizers & Agrochemicals,500000,2745.5,0.13
+82,INE586B01026,Taj GVK Hotels & Resorts Limited,Leisure Services,828694,2704.44,0.13
+83,INE255A01020,EPL Limited,Industrial Products,1474620,2689.71,0.13
+84,INE323C01030,INDIAN HUME PIPE COMPANY LIMITED,Industrial Manufacturing,769177,2414.45,0.11
+85,INE750A01020,Oriental Hotels Limited,Leisure Services,1816804,2397.27,0.11
+86,INE855B01025,Rain Industries Limited,Chemicals & Petrochemicals,1200000,1959.6,0.09
+87,INE607A01022,PUNJAB ALKALIES AND CHEMICALS LTD,Chemicals & Petrochemicals,4556962,1730.73,0.08
+88,INE725G01011,ICRA Limited,Capital Markets,28717,1614.08,0.08
+89,INE579C01029,Vimta Labs Limited,Healthcare Services,330152,1562.61,0.07
+90,INE552D01024,Confidence Petroleum India Ltd,Gas,560383,457.83,0.02
