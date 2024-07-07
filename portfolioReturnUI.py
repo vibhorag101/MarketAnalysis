@@ -147,10 +147,9 @@ def update_sip_calculator(*args):
     result += "Individual scheme returns:\n"
     for scheme_name, scheme_return in scheme_returns:
         result += f"{scheme_name}: {scheme_return:.2f}%\n"
-
-    pie_chart = create_pie_chart(schemes)
-    
-    return result, pie_chart, final_value, total_investment
+    # pie_chart = create_pie_chart(schemes)
+    # return result, pie_chart, final_value, total_investment
+    return result
 
 def fetch_scheme_data():
     url = "https://api.mfapi.in/mf"
@@ -290,9 +289,9 @@ def create_ui():
         calculate_button = gr.Button("Calculate Returns")
         
         result = gr.Textbox(label="Results")
-        pie_chart = gr.Plot(label="Scheme Weightages")
-        final_value = gr.Number(label="Final Value (₹)", interactive=False)
-        total_investment = gr.Number(label="Total Investment (₹)", interactive=False)
+        # pie_chart = gr.Plot(label="Scheme Weightages")
+        # final_value = gr.Number(label="Final Value (₹)", interactive=False)
+        # total_investment = gr.Number(label="Total Investment (₹)", interactive=False)
 
         def update_custom_date_visibility(period):
             return {custom_start_date: gr.update(visible=period=="Custom"),
@@ -367,7 +366,9 @@ def create_ui():
         calculate_button.click(
             lambda *args: update_sip_calculator(*prepare_inputs_with_inception(*args)),
             inputs=[period, custom_start_date, custom_end_date, SIP_Date, sip_amount, schemes_list, gr.State(schemes_df), use_inception_date, inception_date_display],
-            outputs=[result, pie_chart, final_value, total_investment]
+            outputs=[result]
+            # outputs=[result, final_value, total_investment]
+            # outputs=[result, pie_chart, final_value, total_investment]
         )
 
     return app
