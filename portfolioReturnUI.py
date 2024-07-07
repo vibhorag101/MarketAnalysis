@@ -4,6 +4,18 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import requests
 
+
+js_func = """
+function refresh() {
+    const url = new URL(window.location);
+
+    if (url.searchParams.get('__theme') !== 'dark') {
+        url.searchParams.set('__theme', 'dark');
+        window.location.href = url.href;
+    }
+}
+"""
+
 def get_nav_data(scheme_code):
     url = f"https://api.mfapi.in/mf/{scheme_code}"
     response = requests.get(url)
@@ -83,14 +95,24 @@ def update_sip_calculator(*args):
     total_weight = sum(schemes.values())
 
     end_date = datetime.now().date()
+
     if period == "Custom":
         if not custom_start_date or not custom_end_date:
             return "Please provide both start and end dates for custom period.", None, None, None
         start_date = datetime.strptime(custom_start_date, "%Y-%m-%d").date()
         end_date = datetime.strptime(custom_end_date, "%Y-%m-%d").date()
+    
+    elif period == "YTD":
+        start_date = datetime(end_date.year, 1, 1)
+
     else:
-        years = int(period.split()[0])
-        start_date = end_date - timedelta(days=years*365)
+        # check if string contaiins year
+        if 'year' in period.split()[1]:
+            years = int(period.split()[0])
+            start_date = end_date - timedelta(days=years*365)
+        else:
+            months = int(period.split()[0])
+            start_date = end_date - timedelta(days=months*30)
 
     try:
         portfolio_return, final_value, total_investment, scheme_returns = calculate_portfolio_returns(schemes, sip_amount, start_date, end_date, SIP_Date,schemes_df)
@@ -190,14 +212,14 @@ def update_schemes_table(schemes_list):
 def create_ui():
     schemes_df = fetch_scheme_data()
 
-    with gr.Blocks() as app:
+    with gr.Blocks(js=js_func) as app:
         gr.Markdown("# Mutual Fund SIP Returns Calculator")
 
         with gr.Row():
-            period = gr.Dropdown(choices=["1 year", "3 years", "5 years", "7 years", "10 years", "Custom"], label="Select Period")
+            period = gr.Dropdown(choices=["YTD", "1 month","3 months","6 months","1 year", "3 years", "5 years", "7 years", "10 years","15 years","20 years", "Custom"], label="Select Period")
             custom_start_date = gr.Textbox(label="Custom Start Date (YYYY-MM-DD)", visible=False)
             custom_end_date = gr.Textbox(label="Custom End Date (YYYY-MM-DD)", visible=False)
-            SIP_Date = gr.Dropdown(label="SIP Date", choices=["start","middle","end"])
+            SIP_Date = gr.Dropdown(label="Monthly SIP Date", choices=["start","middle","end"])
 
         sip_amount = gr.Number(label="SIP Amount (₹)")
 
@@ -272,6 +294,5 @@ def create_ui():
 
     return app
 
-if __name__ == "__main__":
-    app = create_ui()
-    app.launch()
+app = create_ui()
+app.launch()
